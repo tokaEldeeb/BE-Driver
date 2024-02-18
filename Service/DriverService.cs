@@ -33,6 +33,7 @@ public class DriverService
         _logger.LogInformation($"Returning {drivers.Count} drivers");
         return drivers;
     }
+
     public Driver GetDriver(int id)
     {
         _logger.LogInformation($"Getting driver with id {id} from database");
@@ -51,7 +52,10 @@ public class DriverService
                 Phone = reader.IsDBNull(3) ? "" : reader.GetString(3)
             };
         }
-        return null;
+        else
+        {
+            throw new DriverNotFound();
+        }
     }
 
     public string GetDriverNameSorted(int id)
@@ -62,8 +66,12 @@ public class DriverService
         {
             return $"{sortStrinoAlphapetically(driver.FirstName)} {sortStrinoAlphapetically(driver.LastName)}";
         }
-        return null;
+        else
+        {
+            throw new DriverNotFound();
+        }
     }
+
     public void AddDriver(DriverDTO driver)
     {
         _logger.LogInformation($"Adding driver {driver.FirstName} {driver.LastName} with phone {driver.Phone} to database");
@@ -122,8 +130,8 @@ public class DriverService
         }
         return name;
     }
- 
- private string sortStrinoAlphapetically(string str)
+
+    private string sortStrinoAlphapetically(string str)
     {
         char[] arr = str.ToCharArray();
         Array.Sort(arr);

@@ -22,6 +22,13 @@ public class ExceptionHandlingMiddleware
         {
             await _next(context);
         }
+        catch (DriverNotFound ex)
+        {
+            _logger.LogError(ex, "Driver not found");
+            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            context.Response.ContentType = "text/plain";
+            await context.Response.WriteAsync(ex.Message);
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unhandled exception occurred.");
