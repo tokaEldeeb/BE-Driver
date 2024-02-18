@@ -21,15 +21,35 @@ public class DriversController : ControllerBase
         return drivers;
     }
 
-    [HttpPost]
-    public IActionResult Post(Driver driver)
+    [HttpGet("{id}")]
+    public Driver GetOne(int id)
+    {
+        var driver = _driverService.GetDriver(id);
+        return driver;
+    }
+    [HttpGet("{id}/sorted")]
+    public string GetOneAlphapetized(int id)
+    { 
+        var driver = _driverService.GetDriverNameSorted(id);
+        return driver;
+    }
+
+    [HttpPost(Name = "PostDrivers")]
+    public IActionResult Post(DriverDTO driver)
     {
         _driverService.AddDriver(driver);
-        return CreatedAtRoute("GetDrivers", null);
+        return CreatedAtRoute("PostDrivers", null);
+    }
+
+    [HttpPost("Random", Name = "CreateRandomly")]
+    public IActionResult CreateRandomly()
+    {
+        _driverService.CreateRandomDrivers(10);
+        return CreatedAtRoute("CreateRandomly", null);
     }
 
     [HttpPut("{id}")]
-    public IActionResult Put(Driver driver, int id)
+    public IActionResult Put(DriverDTO driver, int id)
     {
         _driverService.updateDriver(driver, id);
         return NoContent();

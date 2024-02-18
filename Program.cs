@@ -30,7 +30,7 @@ try
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
         using (var command = dbContext.CreateCommand())
         {
-            command.CommandText = "CREATE TABLE IF NOT EXISTS Driver (id INTEGER PRIMARY KEY AUTOINCREMENT, firstName varChar(100), lastName varChar(100), phone varChar(100));";
+            command.CommandText = "CREATE TABLE IF NOT EXISTS Driver (id INTEGER PRIMARY KEY AUTOINCREMENT, firstName varChar(50), lastName varChar(50), phone varChar(15) null);";
             command.ExecuteNonQuery();
         }
         logger.LogInformation($"Table created successfully on db: {dbContext.GetConnectionString()}");
