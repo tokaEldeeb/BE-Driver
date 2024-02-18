@@ -51,14 +51,14 @@ public class DriversController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult Put(DriverDTO driver, int id)
     {
-        _driverService.updateDriver(driver, id);
+        _driverService.UpdateDriver(driver, id);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        _driverService.deleteDriver(id);
+        _driverService.DeleteDriver(id);
         return NoContent();
     }
 }

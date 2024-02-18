@@ -13,6 +13,12 @@ builder.Services.AddScoped<AppDbContext>(provider =>
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     return new AppDbContext(connectionString);
 });
+
+builder.Services.AddScoped<IDriverRepository>(provider =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    return new DriverRepository(provider.GetRequiredService<ILogger<DriverRepository>>(), new AppDbContext(connectionString));
+});
 builder.Services.AddScoped<DriverService>();
 builder.Services.AddLogging(builder =>
 {
@@ -30,7 +36,7 @@ try
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
         using (var command = dbContext.CreateCommand())
         {
-            command.CommandText = "CREATE TABLE IF NOT EXISTS Driver (id INTEGER PRIMARY KEY AUTOINCREMENT, firstName varChar(50), lastName varChar(50), phone varChar(15) null);";
+            command.CommandText = "CREATE TABLE IF NOT EXISTS Driver (id INTEGER PRIMARY KEY AUTOINCREMENT, firstName varChar(50), lastName varChar(50), phone varChar(20) null);";
             command.ExecuteNonQuery();
         }
         logger.LogInformation($"Table created successfully on db: {dbContext.GetConnectionString()}");
